@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+command=${1:-keys}
+
+pick_underkeys() {
+  local used_keys=''
+
+  tmux list-sessions -F '#{session_name}' \
+    | while IFS= read -r session_name; do
+      local session_lower=${session_name,,}
+      local key=''
+
+      for ((i = 0; i < ${#session_name}; i++)); do
+        local char=${session_lower:i:1}
+
+        if [[ $char =~ [a-z0-9] && $used_keys != *"$char"* ]]; then
+          key=$char
+          used_keys+=$char
+          break
+        fi
+      done
+
+      printf '%s\t%s\n' "$key" "$session_name"
+    done
+}
+
+case "$command" in
+  keys)
+    pick_underkeys
+    ;;
+  *)
+    echo "Usage: underkeys keys" >&2
+    exit 2
+    ;;
+esac
