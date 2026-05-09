@@ -11,3 +11,15 @@ With TPM:
 ```tmux
 set -g @plugin 'maxonvim/tmux-underkeys'
 ```
+
+## Usage
+
+Press `M-s`, then the underlined session key.
+
+Example:
+
+```text
+M-s o
+```
+
+Switches to the session whose key is `o`.
