@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-command=${1:-keys}
+command=${1:-}
 
 pick_underkeys() {
   local used_keys=''
@@ -25,12 +25,26 @@ pick_underkeys() {
     done
 }
 
+switch_session() {
+  local wanted_key=${1,,}
+
+  while IFS=$'\t' read -r key session_name; do
+    if [[ $key == "$wanted_key" ]]; then
+      tmux switch-client -t "$session_name"
+      return 0
+    fi
+  done < <(pick_underkeys)
+}
+
 case "$command" in
+  switch)
+    switch_session "${2:-}"
+    ;;
   keys)
     pick_underkeys
     ;;
   *)
-    echo "Usage: underkeys keys" >&2
+    echo "Usage: underkeys switch <key> | keys" >&2
     exit 2
     ;;
 esac
