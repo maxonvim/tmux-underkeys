@@ -10,25 +10,42 @@ pick_underkeys() {
     | while IFS= read -r session_name; do
       local session_lower=${session_name,,}
       local key=''
+      local index=-1
 
       for ((i = 0; i < ${#session_name}; i++)); do
         local char=${session_lower:i:1}
 
         if [[ $char =~ [a-z0-9] && $used_keys != *"$char"* ]]; then
           key=$char
+          index=$i
           used_keys+=$char
           break
         fi
       done
 
-      printf '%s\t%s\n' "$key" "$session_name"
+      printf '%s\t%s\t%s\n' "$key" "$index" "$session_name"
+    done
+}
+
+status() {
+  pick_underkeys \
+    | while IFS=$'\t' read -r _key index session_name; do
+      if [[ $index -ge 0 ]]; then
+        printf '%s' "${session_name:0:index}"
+        printf '#[underscore]%s#[nounderscore]' "${session_name:index:1}"
+        printf '%s' "${session_name:index + 1}"
+      else
+        printf '%s' "$session_name"
+      fi
+
+      printf ' '
     done
 }
 
 switch_session() {
   local wanted_key=${1,,}
 
-  while IFS=$'\t' read -r key session_name; do
+  while IFS=$'\t' read -r key _index session_name; do
     if [[ $key == "$wanted_key" ]]; then
       tmux switch-client -t "$session_name"
       return 0
@@ -37,6 +54,9 @@ switch_session() {
 }
 
 case "$command" in
+  status)
+    status
+    ;;
   switch)
     switch_session "${2:-}"
     ;;
@@ -44,7 +64,7 @@ case "$command" in
     pick_underkeys
     ;;
   *)
-    echo "Usage: underkeys switch <key> | keys" >&2
+    echo "Usage: underkeys status | switch <key> | keys" >&2
     exit 2
     ;;
 esac
