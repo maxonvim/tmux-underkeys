@@ -28,8 +28,16 @@ pick_underkeys() {
 }
 
 status() {
+  local current_session=${1:-}
+
   pick_underkeys \
     | while IFS=$'\t' read -r _key index session_name; do
+      if [[ "$session_name" == "$current_session" ]]; then
+        printf '#[fg=blue,bold]'
+      else
+        printf '#[fg=white]'
+      fi
+
       if [[ $index -ge 0 ]]; then
         printf '%s' "${session_name:0:index}"
         printf '#[underscore]%s#[nounderscore]' "${session_name:index:1}"
@@ -38,7 +46,7 @@ status() {
         printf '%s' "$session_name"
       fi
 
-      printf ' '
+      printf '#[default] '
     done
 }
 
@@ -55,7 +63,7 @@ switch_session() {
 
 case "$command" in
   status)
-    status
+    status "${2:-}"
     ;;
   switch)
     switch_session "${2:-}"
@@ -64,7 +72,7 @@ case "$command" in
     pick_underkeys
     ;;
   *)
-    echo "Usage: underkeys status | switch <key> | keys" >&2
+    echo "Usage: underkeys status [current-session] | switch <key> | keys" >&2
     exit 2
     ;;
 esac
