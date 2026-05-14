@@ -25,10 +25,15 @@ tmux set-option -gq '@underkeys-dir' "$CURRENT_DIR"
 
 if [[ $status_enabled != 'off' ]]; then
   current_status="$(tmux show-option -gqv status-right 2>/dev/null || true)"
-  tmux set-option -gq status-right "$current_status $status_command"
+
+  if [[ $current_status != *'/scripts/underkeys status'* ]]; then
+    tmux set-option -gq status-right "$current_status $status_command"
+  fi
 fi
 
 tmux bind-key -n "$trigger_key" switch-client -T "$key_table" \; display-message 'underkeys'
+tmux bind-key -T "$key_table" Escape switch-client -T root
+tmux bind-key -T "$key_table" C-c switch-client -T root
 
 for key in {a..z} {0..9}; do
   tmux bind-key -T "$key_table" "$key" run-shell "$CURRENT_DIR/scripts/underkeys switch '$key'"
