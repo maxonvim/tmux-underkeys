@@ -23,3 +23,11 @@ M-s o
 ```
 
 Switches to the session whose key is `o`.
+
+## Options
+
+```tmux
+set -g @underkeys-trigger 'M-s'
+set -g @underkeys-table 'underkeys'
+set -g @underkeys-status 'on'
+```
