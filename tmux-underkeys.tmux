@@ -21,15 +21,21 @@ key_table="$(underkeys_option '@underkeys-table' 'underkeys')"
 style_current="$(underkeys_option '@underkeys-current-style' 'fg=blue,bold')"
 style_other="$(underkeys_option '@underkeys-style' 'fg=white')"
 status_enabled="$(underkeys_option '@underkeys-status' 'on')"
+status_position="$(underkeys_option '@underkeys-position' 'right')"
 status_command="#($CURRENT_DIR/scripts/underkeys status '#S' '$style_current' '$style_other')"
 
 tmux set-option -gq '@underkeys-dir' "$CURRENT_DIR"
 
 if [[ $status_enabled != 'off' ]]; then
-  current_status="$(tmux show-option -gqv status-right 2>/dev/null || true)"
+  status_option="status-$status_position"
+  current_status="$(tmux show-option -gqv "$status_option" 2>/dev/null || true)"
 
   if [[ $current_status != *'/scripts/underkeys status'* ]]; then
-    tmux set-option -gq status-right "$current_status $status_command"
+    if [[ $status_position == 'left' ]]; then
+      tmux set-option -gq "$status_option" "$status_command $current_status"
+    else
+      tmux set-option -gq "$status_option" "$current_status $status_command"
+    fi
   fi
 fi
 
