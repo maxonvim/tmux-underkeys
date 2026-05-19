@@ -29,18 +29,22 @@ pick_underkeys() {
 
 status() {
   local current_session=${1:-}
+  local current_style=${2:-fg=blue,bold}
+  local other_style=${3:-fg=white}
 
   pick_underkeys \
     | while IFS=$'\t' read -r _key index session_name; do
       if [[ "$session_name" == "$current_session" ]]; then
-        printf '#[fg=blue,bold]'
+        style=$current_style
       else
-        printf '#[fg=white]'
+        style=$other_style
       fi
+
+      printf '#[%s]' "$style"
 
       if [[ $index -ge 0 ]]; then
         printf '%s' "${session_name:0:index}"
-        printf '#[underscore]%s#[nounderscore]' "${session_name:index:1}"
+        printf '#[underscore]%s#[nounderscore,%s]' "${session_name:index:1}" "$style"
         printf '%s' "${session_name:index + 1}"
       else
         printf '%s' "$session_name"
@@ -63,7 +67,7 @@ switch_session() {
 
 case "$command" in
   status)
-    status "${2:-}"
+    status "${2:-}" "${3:-fg=blue,bold}" "${4:-fg=white}"
     ;;
   switch)
     switch_session "${2:-}"
@@ -72,7 +76,7 @@ case "$command" in
     pick_underkeys
     ;;
   *)
-    echo "Usage: underkeys status [current-session] | switch <key> | keys" >&2
+    echo "Usage: underkeys status [current-session] [current-style] [style] | switch <key> | keys" >&2
     exit 2
     ;;
 esac

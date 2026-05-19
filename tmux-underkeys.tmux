@@ -18,8 +18,10 @@ underkeys_option() {
 
 trigger_key="$(underkeys_option '@underkeys-trigger' 'M-s')"
 key_table="$(underkeys_option '@underkeys-table' 'underkeys')"
+style_current="$(underkeys_option '@underkeys-current-style' 'fg=blue,bold')"
+style_other="$(underkeys_option '@underkeys-style' 'fg=white')"
 status_enabled="$(underkeys_option '@underkeys-status' 'on')"
-status_command="#($CURRENT_DIR/scripts/underkeys status '#S')"
+status_command="#($CURRENT_DIR/scripts/underkeys status '#S' '$style_current' '$style_other')"
 
 tmux set-option -gq '@underkeys-dir' "$CURRENT_DIR"
 
