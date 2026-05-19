@@ -22,6 +22,7 @@ style_current="$(underkeys_option '@underkeys-current-style' 'fg=blue,bold')"
 style_other="$(underkeys_option '@underkeys-style' 'fg=white')"
 status_enabled="$(underkeys_option '@underkeys-status' 'on')"
 status_position="$(underkeys_option '@underkeys-position' 'right')"
+status_separator="$(underkeys_option '@underkeys-separator' ' ')"
 status_command="#($CURRENT_DIR/scripts/underkeys status '#S' '$style_current' '$style_other')"
 
 tmux set-option -gq '@underkeys-dir' "$CURRENT_DIR"
@@ -32,9 +33,9 @@ if [[ $status_enabled != 'off' ]]; then
 
   if [[ $current_status != *'/scripts/underkeys status'* ]]; then
     if [[ $status_position == 'left' ]]; then
-      tmux set-option -gq "$status_option" "$status_command $current_status"
+      tmux set-option -gq "$status_option" "$status_command$status_separator$current_status"
     else
-      tmux set-option -gq "$status_option" "$current_status $status_command"
+      tmux set-option -gq "$status_option" "$current_status$status_separator$status_command"
     fi
   fi
 fi
