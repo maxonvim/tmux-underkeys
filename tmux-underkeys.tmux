@@ -26,6 +26,7 @@ status_separator="$(underkeys_option '@underkeys-separator' ' ')"
 status_command="#($CURRENT_DIR/scripts/underkeys status '#S' '$style_current' '$style_other')"
 
 tmux set-option -gq '@underkeys-dir' "$CURRENT_DIR"
+tmux set-option -gq '@underkeys-format' "$status_command"
 
 if [[ $status_enabled != 'off' ]]; then
   status_option="status-$status_position"
