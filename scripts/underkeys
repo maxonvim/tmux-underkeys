@@ -33,7 +33,7 @@ status() {
   local other_style=${3:-fg=white}
 
   pick_underkeys \
-    | while IFS=$'\t' read -r _key index session_name; do
+    | while IFS=$'\t' read -r key index session_name; do
       if [[ "$session_name" == "$current_session" ]]; then
         style=$current_style
       else
@@ -56,6 +56,11 @@ status() {
 
 switch_session() {
   local wanted_key=${1,,}
+
+  if [[ -z ${TMUX:-} ]]; then
+    echo "Not inside tmux." >&2
+    exit 1
+  fi
 
   while IFS=$'\t' read -r key _index session_name; do
     if [[ $key == "$wanted_key" ]]; then
