@@ -68,6 +68,8 @@ switch_session() {
       return 0
     fi
   done < <(pick_underkeys)
+
+  tmux display-message "No tmux session for key: $wanted_key"
 }
 
 case "$command" in
