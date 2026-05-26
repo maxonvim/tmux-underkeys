@@ -20,6 +20,14 @@ With TPM:
 set -g @plugin 'maxonvim/tmux-underkeys'
 ```
 
+The plugin adds the underkey session list to `status-right` automatically.
+
+During local develpment, load the plugin directly:
+
+```tmux
+run-shell /path/to/tmux-underkeys/tmux-underkeys.tmux
+```
+
 ## Usage
 
 Press `M-s`, then the underlined session key.
