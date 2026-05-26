@@ -6,10 +6,10 @@ Visible mnemonic keys for instant tmux session switching.
 
 ```text
 _a_pp a_p_i a_d_min _n_otes
-M-s a -> app
-M-s p -> api
-M-s d -> admin
-M-s n -> notes
+C-g a -> app
+C-g p -> api
+C-g d -> admin
+C-g n -> notes
 ```
 
 ## Installation
@@ -17,6 +17,13 @@ M-s n -> notes
 With TPM:
 
 ```tmux
+set -g @plugin 'maxonvim/tmux-underkeys'
+```
+
+Choose your trigger key before the plugin line if you do not want the default `C-g`:
+
+```tmux
+set -g @underkeys-trigger 'M-s'
 set -g @plugin 'maxonvim/tmux-underkeys'
 ```
 
@@ -30,12 +37,18 @@ run-shell /path/to/tmux-underkeys/tmux-underkeys.tmux
 
 ## Usage
 
-Press `M-s`, then the underlined session key.
+Press the trigger key, then the underlined session key.
+
+Default trigger:
+
+```text
+C-g
+```
 
 Example:
 
 ```text
-M-s o
+C-g o
 ```
 
 Switches to the session whose underlined key is `o`.
@@ -43,7 +56,7 @@ Switches to the session whose underlined key is `o`.
 ## Options
 
 ```tmux
-set -g @underkeys-trigger 'M-s'
+set -g @underkeys-trigger 'C-g'
 set -g @underkeys-table 'underkeys'
 set -g @underkeys-status 'on'
 set -g @underkeys-position 'right'

@@ -16,7 +16,7 @@ underkeys_option() {
   fi
 }
 
-trigger_key="$(underkeys_option '@underkeys-trigger' 'M-s')"
+trigger_key="$(underkeys_option '@underkeys-trigger' 'C-g')"
 key_table="$(underkeys_option '@underkeys-table' 'underkeys')"
 style_current="$(underkeys_option '@underkeys-current-style' 'fg=blue,bold')"
 style_other="$(underkeys_option '@underkeys-style' 'fg=white')"
