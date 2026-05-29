@@ -29,7 +29,7 @@ set -g @plugin 'maxonvim/tmux-underkeys'
 
 The plugin adds the underkey session list to `status-right` automatically.
 
-During local develpment, load the plugin directly:
+During local development, load the plugin directly:
 
 ```tmux
 run-shell /path/to/tmux-underkeys/tmux-underkeys.tmux
@@ -63,4 +63,21 @@ set -g @underkeys-position 'right'
 set -g @underkeys-separator ' '
 set -g @underkeys-current-style 'fg=blue,bold'
 set -g @underkeys-style 'fg=white'
+```
+
+Set `@underkeys-status` to `off` if you want to place the status segment yourself.
+
+## How Keys Are Picked
+
+Sessions are processed in `tmux list-sessions` order.
+
+For each session, the first unused alphanumeric character in the session name becomes its key.
+
+For example:
+
+```text
+app   -> a
+api   -> p
+admin -> d
+notes -> n
 ```
