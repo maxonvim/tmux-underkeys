@@ -1,5 +1,7 @@
 # tmux-underkeys
 
+![tmux-underkeys demo](assets/demo.gif)
+
 Visible mnemonic keys for instant tmux session switching.
 
 `tmux-underkeys` underlines one unique character in each session name and binds a trigger key so you can jump directly to that session.
