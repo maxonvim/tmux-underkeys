@@ -3,10 +3,44 @@ set -euo pipefail
 
 command=${1:-}
 
+underkeys_option() {
+  local option=$1
+  local default=$2
+  local value
+
+  value="$(tmux show-option -gqv "$option" 2>/dev/null || true)"
+
+  if [[ -n $value ]]; then
+    printf '%s' "$value"
+  else
+    printf '%s' "$default"
+  fi
+}
+
+list_sessions() {
+  local sort_order
+
+  sort_order="$(underkeys_option '@underkeys-sort' 'created')"
+
+  case "$sort_order" in
+    name)
+      tmux list-sessions -F '#{session_name}' | sort
+      ;;
+    tmux)
+      tmux list-sessions -F '#{session_name}'
+      ;;
+    *)
+      tmux list-sessions -F '#{session_created}	#{session_id}	#{session_name}' \
+        | sort -k1,1n -k2,2 \
+        | cut -f3-
+      ;;
+  esac
+}
+
 pick_underkeys() {
   local used_keys=''
 
-  tmux list-sessions -F '#{session_name}' \
+  list_sessions \
     | while IFS= read -r session_name; do
       local session_lower=${session_name,,}
       local key=''
