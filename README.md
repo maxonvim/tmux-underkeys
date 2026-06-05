@@ -45,12 +45,6 @@ set -g @plugin 'maxonvim/tmux-underkeys'
 
 The plugin adds the underkey session list to `status-right` automatically.
 
-During local development, load the plugin directly:
-
-```tmux
-run-shell /path/to/tmux-underkeys/tmux-underkeys.tmux
-```
-
 ## Usage
 
 Press the trigger key, then the underlined session key.
