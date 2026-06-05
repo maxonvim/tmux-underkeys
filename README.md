@@ -10,23 +10,12 @@ Visible mnemonic keys for instant tmux session switching.
 
 - Sessions are always visible in the status line, so switching does not require
   opening or listing sessions.
-- Each session gets a single character taken from its name, avoiding numbered
-  indexes or manual search.
 - Switching is reduced to two inputs: trigger key, then the displayed character.
 - The mapping is stable as long as session names stay the same, so keys do not
   change unexpectedly.
-- Adding more sessions only adds more characters to the status line, not more
+- Adding more sessions only adds more characters to the status line, rather than more
   steps to switch.
 - No need to remember session positions or reorder-dependent shortcuts.
-- No fuzzy matching or typing full names; partial recall is enough if the key is
-  visible.
-- Works the same across tmux restarts and session re-attachments, since it
-  depends on names, not runtime state.
-- Eliminates accidental mis-selection from long session lists or similar names.
-- Reduces context switching between “where am I” and “where can I go” by keeping
-  destinations always in view.
-- Scales to large numbers of sessions without introducing hierarchical
-  navigation or pagination.
 
 ## Installation
 
